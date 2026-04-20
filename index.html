@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waffle House - Toko Waffle Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Menu Section */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-content {
+            padding: 1.5rem;
+        }
+
+        .menu-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .menu-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .menu-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .toppings {
+            margin-bottom: 1rem;
+        }
+
+        .toppings label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .topping-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: #ff5252;
+        }
+
+        /* Cart Section */
+        .cart-items {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .item-toppings {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .qty-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .remove-item {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #ff6b6b;
+        }
+
+        /* Checkout Section */
+        .checkout-form {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-option {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover, .payment-option.selected {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .order-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: background 0.3s ease;
+        }
+
+        .order-btn:hover {
+            background: #ff5252;
+        }
+
+        .order-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Empty State */
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-cart img {
+            width: 100px;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-content h2 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .close-modal {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🧇 Waffle House</div>
+                <div class="cart-icon" onclick="showSection('cart')">
+                    🛒 Keranjang
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="showSection('menu')">Menu</div>
+                <div class="nav-item" onclick="showSection('cart')">Keranjang</div>
+                <div class="nav-item" onclick="showSection('checkout')">Checkout</div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Menu Section -->
+            <section id="menu" class="section active">
+                <h2>Menu Waffle Kami</h2>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Cart Section -->
+            <section id="cart" class="section">
+                <h2>Keranjang Belanja</h2>
+                <div class="cart-items" id="cartItems">
+                    <div class="empty-cart">
+                        <div style="font-size: 3rem;">🛒</div>
+                        <h3>Keranjang Kosong</h3>
+                        <p>Silakan pilih waffle favorit Anda dari menu</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Checkout Section -->
+            <section id="checkout" class="section">
+                <h2>Checkout Pesanan</h2>
+                <div class="checkout-form">
+                    <div class="form-group">
+                        <label for="customerName">Nama Lengkap</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Nomor Telepon</label>
+                        <input type="tel" id="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Alamat Pengiriman</label>
+                        <textarea id="customerAddress" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Metode Pembayaran</label>
+                        <div class="payment-methods">
+                            <div class="payment-option" data-payment="cod">
+                                <div>💵</div>
+                                <div>Cash on Delivery</div>
+                            </div>
+                            <div class="payment-option" data-payment="transfer">
+                                <div>🏦</div>
+                                <div>Transfer Bank</div>
+                            </div>
+                            <div class="payment-option" data-payment="ewallet">
+                                <div>📱</div>
+                                <div>E-Wallet</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-total" id="checkoutTotal">
+                        Total: Rp 0
+                    </div>
+                    <button class="order-btn" onclick="processOrder()" disabled>
+                        Pesan Sekarang
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h2>🎉 Pesanan Berhasil!</h2>
+            <p>Terima kasih atas pesanan Anda. Kami akan segera memproses pesanan Anda.</p>
+            <p><strong>Nomor Pesanan: <span id="orderNumber"></span></strong></p>
+            <button class="close-modal" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        // Data menu waffle
+        const menuData = [
+            {
+                id: 1,
+                name: "Classic Waffle",
+                description: "Waffle klasik dengan tekstur renyah di luar dan lembut di dalam",
+                price: 25000,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23f4e4bc'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23d4a574'%3E🧇 Classic%3C/text%3E%3C/svg%3E",
+                toppings: [
+                    { name: "Madu", price: 5000 },
+                    { name: "Maple Syrup", price: 7000 },
+                    { name: "Butter", price: 3000 }
+                ]
+            },
+            {
+                id: 2,
+                name: "Chocolate Waffle",
+                description: "Waffle cokelat dengan topping cokelat leleh yang menggoda",
+                price: 30000,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23d4a574'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23654321'%3E🍫 Chocolate%3C/text%3E%3C/svg%3E",
+                toppings: [
+                    { name: "Chocolate Chips", price: 8000 },
+                    { name: "Whipped Cream", price: 6000 },
+                    { name: "Chocolate Sauce", price: 5000 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Strawberry Waffle",
+                description: "Waffle segar dengan potongan strawberry dan krim",
+                price: 35000,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23ffb3ba'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23ff1744'%3E🍓 Strawberry%3C/text%3E%3C/svg%3E",
+                toppings: [
+                    { name: "Fresh Strawberry", price: 10000 },
+                    { name: "Strawberry Sauce", price: 7000 },
+                    { name: "Vanilla Ice Cream", price: 12000 }
+                ]
+            },
+            {
+                id: 4,
+                name: "Banana Waffle",
+                description: "Waffle dengan irisan pisang segar dan kayu manis",
+                price: 28000,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fff3cd'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23856404'%3E🍌 Banana%3C/text%3E%3C/svg%3E",
+                toppings: [
+                    { name: "Sliced Banana", price: 6000 },
+                    { name: "Cinnamon", price: 3000 },
+                    { name: "Caramel Sauce", price: 8000 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Blueberry Waffle",
+                description: "Waffle dengan blueberry segar dan yogurt",
+                price: 38000,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23cce5ff'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23004085'%3E🫐 Blueberry%3C/text%3E%3C/svg%3E",
+                toppings: [
+                    { name: "Fresh Blueberry", price: 12000 },
+                    { name: "Greek Yogurt", price: 10000 },
+                    { name: "Honey", price: 5000 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Nutella Waffle",
+                description: "Waffle dengan olesan Nutella dan kacang cincang",
+                price: 40000,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23d4a574'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23654321'%3E🥜 Nutella%3C/text%3E%3C/svg%3E",
+                toppings: [
+                    { name: "Extra Nutella", price: 10000 },
+                    { name: "Chopped Nuts", price: 8000 },
+                    { name: "Powdered Sugar", price: 3000 }
+                ]
+            }
+        ];
+
+        // Shopping cart
+        let cart = [];
+        let selectedPayment = '';
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMenu();
+            updateCartCount();
+        });
+
+        // Render menu items
+        function renderMenu() {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = '';
+
+            menuData.forEach(item => {
+                const menuItem = document.createElement('div');
+                menuItem.className = 'menu-item';
+                menuItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="menu-content">
+                        <h3 class="menu-title">${item.name}</h3>
+                        <p class="menu-description">${item.description}</p>
+                        <div class="menu-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                        <div class="toppings">
+                            <label><strong>Pilih Topping:</strong></label>
+                            ${item.toppings.map(topping => `
+                                <div class="topping-option">
+                                    <input type="checkbox" id="topping-${item.id}-${topping.name}" 
+                                           value="${topping.name}" data-price="${topping.price}">
+                                    <label for="topping-${item.id}-${topping.name}">
+                                        ${topping.name} (+Rp ${topping.price.toLocaleString('id-ID')})
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${item.id})">
+                            Tambah ke Keranjang
+                        </button>
+                    </div>
+                `;
+                menuGrid.appendChild(menuItem);
+            });
+        }
+
+        // Add item to cart
+        function addToCart(itemId) {
+            const item = menuData.find(m => m.id === itemId);
+            const toppings = [];
+            let toppingPrice = 0;
+
+            // Get selected toppings
+            const toppingCheckboxes = document.querySelectorAll(`input[id^="topping-${itemId}-"]:checked`);
+            toppingCheckboxes.forEach(checkbox => {
+                toppings.push(checkbox.value);
+                toppingPrice += parseInt(checkbox.dataset.price);
+            });
+
+            const cartItem = {
+                id: Date.now(), // Unique ID for cart item
+                menuId: itemId,
+                name: item.name,
+                price: item.price,
+                toppings: toppings,
+                toppingPrice: toppingPrice,
+                quantity: 1,
+                total: item.price + toppingPrice
+            };
+
+            cart.push(cartItem);
+            updateCartCount();
+            updateCartDisplay();
+
+            // Uncheck all toppings
+            toppingCheckboxes.forEach(checkbox => checkbox.checked = false);
+
+            // Show success message
+            alert(`${item.name} berhasil ditambahkan ke keranjang!`);
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = cart.length;
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div style="font-size: 3rem;">🛒</div>
+                        <h3>Keranjang Kosong</h3>
+                        <p>Silakan pilih waffle favorit Anda dari menu</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let cartHTML = '';
+            let totalPrice = 0;
+
+            cart.forEach(item => {
+                totalPrice += item.total * item.quantity;
+                cartHTML += `
+                    <div class="cart-item">
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <div class="item-toppings">
+                                ${item.toppings.length > 0 ? 'Topping: ' + item.toppings.join(', ') : 'Tanpa topping'}
+                            </div>
+                            <div>Rp ${item.total.toLocaleString('id-ID')} per item</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            <button class="remove-item" onclick="removeFromCart(${item.id})">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartHTML += `<div class="cart-total">Total: Rp ${totalPrice.toLocaleString('id-ID')}</div>`;
+            cartItems.innerHTML = cartHTML;
+
+            // Update checkout total
+            document.getElementById('checkoutTotal').textContent = `Total: Rp ${totalPrice.toLocaleString('id-ID')}`;
+        }
+
+        // Update item quantity
+        function updateQuantity(itemId, change) {
+            const item = cart.find(c => c.id === itemId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(itemId);
+                } else {
+                    updateCartDisplay();
+                }
+            }
+        }
+
+        // Remove item from cart
+        function removeFromCart(itemId) {
+            cart = cart.filter(c => c.id !== itemId);
+            updateCartCount();
+            updateCartDisplay();
+        }
+
+        // Show section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+
+            // Add active class to corresponding nav item
+            event.target.classList.add('active');
+
+            // Update cart display when showing cart
+            if (sectionName === 'cart') {
+                updateCartDisplay();
+            }
+        }
+
+        // Payment method selection
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.payment-option')) {
+                // Remove selected class from all payment options
+                document.querySelectorAll('.payment-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                // Add selected class to clicked option
+                e.target.closest('.payment-option').classList.add('selected');
+                selectedPayment = e.target.closest('.payment-option').dataset.payment;
+
+                // Enable order button if cart is not empty
+                const orderBtn = document.querySelector('.order-btn');
+                orderBtn.disabled = cart.length === 0;
+            }
+        });
+
+        // Process order
+        function processOrder() {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+
+            if (!customerName || !customerPhone || !customerAddress || !selectedPayment) {
+                alert('Mohon lengkapi semua data pesanan!');
+                return;
+            }
+
+            if (cart.length === 0) {
+                alert('Keranjang masih kosong!');
+                return;
+            }
+
+            // Generate order number
+            const orderNumber = 'WF' + Date.now().toString().slice(-6);
+            document.getElementById('orderNumber').textContent = orderNumber;
+
+            // Show success modal
+            document.getElementById('successModal').style.display = 'block';
+
+            // Clear cart and form
+            cart = [];
+            updateCartCount();
+            updateCartDisplay();
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerAddress').value = '';
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedPayment = '';
+            document.querySelector('.order-btn').disabled = true;
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+            showSection('menu');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('successModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
