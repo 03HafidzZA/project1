@@ -137,6 +137,17 @@
             object-fit: cover;
         }
 
+        .menu-banner {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
         .menu-content {
             padding: 1.5rem;
         }
@@ -433,6 +444,7 @@
     <nav>
         <div class="container">
             <div class="nav-menu">
+                <div class="nav-item" onclick="showSection('lokasi')">📍 Lokasi</div>
                 <div class="nav-item active" onclick="showSection('menu')">Menu</div>
                 <div class="nav-item" onclick="showSection('cart')">Keranjang</div>
                 <div class="nav-item" onclick="showSection('checkout')">Checkout</div>
@@ -442,6 +454,53 @@
 
     <main>
         <div class="container">
+            <!-- Lokasi Section -->
+            <section id="lokasi" class="section">
+                <h2>Lokasi Kami</h2>
+                <div style="background: white; border-radius: 15px; padding: 2rem; margin-top: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <h3 style="color: #ff6b6b; margin-bottom: 1rem;">📍 Alamat Toko</h3>
+                            <p style="margin-bottom: 0.5rem;"><strong>Waffle House</strong></p>
+                            <p style="color: #555; margin-bottom: 0.5rem;">Jl. Raya Waffle No. 88, Kelurahan Manis</p>
+                            <p style="color: #555; margin-bottom: 1.5rem;">Kecamatan Lezat, Kota Yummy 12345</p>
+                            <h3 style="color: #ff6b6b; margin-bottom: 1rem;">🕐 Jam Operasional</h3>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 8px 0; color: #555;">Senin – Jumat</td>
+                                    <td style="padding: 8px 0; font-weight: bold;">08.00 – 21.00</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 8px 0; color: #555;">Sabtu</td>
+                                    <td style="padding: 8px 0; font-weight: bold;">08.00 – 22.00</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #555;">Minggu</td>
+                                    <td style="padding: 8px 0; font-weight: bold;">09.00 – 20.00</td>
+                                </tr>
+                            </table>
+                            <h3 style="color: #ff6b6b; margin-top: 1.5rem; margin-bottom: 1rem;">📞 Kontak</h3>
+                            <p style="color: #555; margin-bottom: 0.4rem;">📱 WhatsApp: <strong>0812-3456-7890</strong></p>
+                            <p style="color: #555; margin-bottom: 0.4rem;">📧 Email: <strong>hello@wafflehouse.id</strong></p>
+                            <p style="color: #555;">📸 Instagram: <strong>@wafflehouse.id</strong></p>
+                        </div>
+                        <div style="flex: 1; min-width: 280px;">
+                            <h3 style="color: #ff6b6b; margin-bottom: 1rem;">🗺️ Peta Lokasi</h3>
+                            <div style="background: #f0f0f0; border-radius: 12px; height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed #ccc;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">🗺️</div>
+                                <p style="color: #888; text-align: center; padding: 0 1rem;">
+                                    Peta interaktif dapat ditambahkan<br>dengan embed Google Maps
+                                </p>
+                                <a href="https://maps.google.com" target="_blank"
+                                   style="margin-top: 1rem; padding: 10px 20px; background: #ff6b6b; color: white; border-radius: 20px; text-decoration: none; font-weight: bold;">
+                                    Buka di Google Maps
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Menu Section -->
             <section id="menu" class="section active">
                 <h2>Menu Waffle Kami</h2>
@@ -522,9 +581,11 @@
             {
                 id: 1,
                 name: "Classic Waffle",
+                emoji: "🧇",
                 description: "Waffle klasik dengan tekstur renyah di luar dan lembut di dalam",
                 price: 25000,
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23f4e4bc'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23d4a574'%3E🧇 Classic%3C/text%3E%3C/svg%3E",
+                bgColor: "#f4e4bc",
+                textColor: "#a0724a",
                 toppings: [
                     { name: "Madu", price: 5000 },
                     { name: "Maple Syrup", price: 7000 },
@@ -534,9 +595,11 @@
             {
                 id: 2,
                 name: "Chocolate Waffle",
+                emoji: "🍫",
                 description: "Waffle cokelat dengan topping cokelat leleh yang menggoda",
                 price: 30000,
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23d4a574'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23654321'%3E🍫 Chocolate%3C/text%3E%3C/svg%3E",
+                bgColor: "#c8956c",
+                textColor: "#3e1f00",
                 toppings: [
                     { name: "Chocolate Chips", price: 8000 },
                     { name: "Whipped Cream", price: 6000 },
@@ -546,9 +609,11 @@
             {
                 id: 3,
                 name: "Strawberry Waffle",
+                emoji: "🍓",
                 description: "Waffle segar dengan potongan strawberry dan krim",
                 price: 35000,
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23ffb3ba'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23ff1744'%3E🍓 Strawberry%3C/text%3E%3C/svg%3E",
+                bgColor: "#ffb3ba",
+                textColor: "#c0002a",
                 toppings: [
                     { name: "Fresh Strawberry", price: 10000 },
                     { name: "Strawberry Sauce", price: 7000 },
@@ -558,9 +623,11 @@
             {
                 id: 4,
                 name: "Banana Waffle",
+                emoji: "🍌",
                 description: "Waffle dengan irisan pisang segar dan kayu manis",
                 price: 28000,
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fff3cd'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23856404'%3E🍌 Banana%3C/text%3E%3C/svg%3E",
+                bgColor: "#fff3cd",
+                textColor: "#856404",
                 toppings: [
                     { name: "Sliced Banana", price: 6000 },
                     { name: "Cinnamon", price: 3000 },
@@ -570,9 +637,11 @@
             {
                 id: 5,
                 name: "Blueberry Waffle",
+                emoji: "🫐",
                 description: "Waffle dengan blueberry segar dan yogurt",
                 price: 38000,
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23cce5ff'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23004085'%3E🫐 Blueberry%3C/text%3E%3C/svg%3E",
+                bgColor: "#cce5ff",
+                textColor: "#004085",
                 toppings: [
                     { name: "Fresh Blueberry", price: 12000 },
                     { name: "Greek Yogurt", price: 10000 },
@@ -582,9 +651,11 @@
             {
                 id: 6,
                 name: "Nutella Waffle",
+                emoji: "🥜",
                 description: "Waffle dengan olesan Nutella dan kacang cincang",
                 price: 40000,
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23d4a574'/%3E%3Ctext x='150' y='100' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%23654321'%3E🥜 Nutella%3C/text%3E%3C/svg%3E",
+                bgColor: "#d4a574",
+                textColor: "#3e1f00",
                 toppings: [
                     { name: "Extra Nutella", price: 10000 },
                     { name: "Chopped Nuts", price: 8000 },
@@ -612,9 +683,10 @@
                 const menuItem = document.createElement('div');
                 menuItem.className = 'menu-item';
                 menuItem.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}">
+                    <div class="menu-banner" style="background-color: ${item.bgColor}; color: ${item.textColor};">
+                        ${item.emoji} ${item.name} ${item.emoji}
+                    </div>
                     <div class="menu-content">
-                        <h3 class="menu-title">${item.name}</h3>
                         <p class="menu-description">${item.description}</p>
                         <div class="menu-price">Rp ${item.price.toLocaleString('id-ID')}</div>
                         <div class="toppings">
@@ -761,7 +833,9 @@
             document.getElementById(sectionName).classList.add('active');
 
             // Add active class to corresponding nav item
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.closest('.nav-item').classList.add('active');
+            }
 
             // Update cart display when showing cart
             if (sectionName === 'cart') {
